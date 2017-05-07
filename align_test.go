@@ -21,6 +21,11 @@ func ExampleAlign() {
 	for j := 0; j < rows; j++ {
 		plots[j] = make([]*Plot, cols)
 		for i := 0; i < cols; i++ {
+			if i == 0 && j == 2 {
+				// This shows what happens when there are nil plots.
+				continue
+			}
+
 			p, err := New()
 			if err != nil {
 				panic(err)
@@ -37,6 +42,8 @@ func ExampleAlign() {
 				p.X.Tick.Label.Font.Size = 8
 				p.Y.Tick.Label.Font.Size = 8
 			} else {
+				p.Y.Max = 1e9
+				p.X.Max = 1e9
 				p.X.Tick.Label.Font.Size = 1
 				p.Y.Tick.Label.Font.Size = 1
 			}
@@ -56,7 +63,9 @@ func ExampleAlign() {
 	canvases := Align(plots, t, dc)
 	for j := 0; j < rows; j++ {
 		for i := 0; i < cols; i++ {
-			plots[j][i].Draw(canvases[j][i])
+			if plots[j][i] != nil {
+				plots[j][i].Draw(canvases[j][i])
+			}
 		}
 	}
 
