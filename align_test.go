@@ -31,6 +31,12 @@ func ExampleAlign() {
 				panic(err)
 			}
 
+			if j == 0 && i == 2 {
+				// This shows what happens when the axis padding
+				// is different among plots.
+				p.X.Padding, p.Y.Padding = 0, 0
+			}
+
 			if j == 1 && i == 1 {
 				// To test the Align function, we make the axis labels
 				// on one of the plots stick out.
