@@ -18,6 +18,7 @@ package plotter
 
 import (
 	"errors"
+	"fmt"
 	"image/color"
 	"math"
 
@@ -144,6 +145,19 @@ func CopyXYs(data XYer) (XYs, error) {
 		}
 	}
 	return cpy, nil
+}
+
+// NewXYs returns an XYs that is a combination of the x, y Valuer,
+// or an error if x's length is not equal to y's.
+func NewXYs(x, y Valuer) XYs {
+	if x.Len() != y.Len() {
+		panic(fmt.Errorf("Len mismatch, %d != %d", x.Len(), y.Len()))
+	}
+	xys := make(XYs, x.Len())
+	for i := range xys {
+		xys[i].X, xys[i].Y = x.Value(i), y.Value(i)
+	}
+	return xys
 }
 
 func (xys XYs) Len() int {
